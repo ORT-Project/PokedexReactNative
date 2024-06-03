@@ -1,12 +1,19 @@
 import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import useApi from "../hook/useApi";
 
 export default function App() {
+    const {data} = useApi('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0')
+    const results = data?.results ?? []
     return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-            <StatusBar style="auto"/>
-        </View>
+        <ScrollView>
+            <View style={styles.container}>
+                {results.map((pokemon: any) => (
+                    <Text key={pokemon.name}>{pokemon.name}</Text>
+                ))}
+                <StatusBar style="auto"/>
+            </View>
+        </ScrollView>
     );
 }
 
