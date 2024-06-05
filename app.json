@@ -26,6 +26,10 @@
     "plugins": [
       "expo-router"
     ],
+    "assetBundlePatterns": [
+      "**/*",
+      "./assets/fonts/*"
+    ],
       "scheme": "pokedex-react-native"
   }
 }
