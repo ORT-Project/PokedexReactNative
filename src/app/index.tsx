@@ -15,6 +15,7 @@ import * as Font from 'expo-font'
 import useApi, { fetchDataApi } from '../hook/useApi'
 import { strUcFirst, removeAfterDash } from '../utils/utils'
 import type { ApiResponseType, PokemonDetail } from '../type'
+import { useFonts } from '../utils/fontLoader'
 
 export default function App() {
     useEffect(() => {
@@ -26,7 +27,6 @@ export default function App() {
                 await sound.playAsync();
                 await sound.setVolumeAsync(0.4);
                 await sound.setIsLoopingAsync(true)
-
             } catch (error) {
                 console.log(error);
             }
@@ -45,22 +45,7 @@ export default function App() {
         };
     }, []);
 
-    const [fontLoaded, setFontLoaded] = useState(false);
-
-    useEffect(() => {
-        async function loadFonts() {
-            try {
-                await Font.loadAsync({
-                    'PokemonBW': require('../../assets/font/pokemon_classic.ttf'),
-                });
-                setFontLoaded(true);
-            } catch (error) {
-                console.error(ActivityIndicator, error);
-            }
-        }
-
-        loadFonts();
-    }, []);
+    useFonts()
 
     const {data} = useApi<ApiResponseType[]>('https://pokeapi.co/api/v2/pokemon?limit=649&offset=0')
     const results = data?.results ?? []
