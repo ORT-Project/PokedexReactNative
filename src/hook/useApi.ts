@@ -20,3 +20,9 @@ export default function useApi<T>(path: string) {
         error
     }
 }
+
+
+export const fetchDataApi = async <T>(path: string): Promise<T> => {
+    const response = await axios.get<T>(path);
+    return response.data;
+};

@@ -1,4 +1,3 @@
-import {StatusBar} from 'expo-status-bar'
 import {
     StyleSheet,
     Text,
@@ -13,15 +12,9 @@ import {
 import { Audio } from 'expo-av'
 import React, {useEffect, useRef, useState} from 'react'
 import * as Font from 'expo-font'
-import useApi from '../hook/useApi'
-import axios from 'axios'
-// @ts-ignore
-import { strUcFirst, removeAfterDash } from '../utils/utils.ts'
-
-const fetchData = async (path: string) => {
-      const response =  await axios.get<T>(path)
-      return response.data
-}
+import useApi, { fetchDataApi } from '../hook/useApi'
+import { strUcFirst, removeAfterDash } from '../utils/utils'
+import type { ApiResponseType, PokemonDetail } from '../type'
 
 export default function App() {
     useEffect(() => {
@@ -69,16 +62,11 @@ export default function App() {
         loadFonts();
     }, []);
 
-    const {data} = useApi('https://pokeapi.co/api/v2/pokemon?limit=649&offset=0')
+    const {data} = useApi<ApiResponseType[]>('https://pokeapi.co/api/v2/pokemon?limit=649&offset=0')
     const results = data?.results ?? []
 
-    const [selectedPokemonUrl, setSelectedPokemonUrl] = useState(null);
-    const  uniquePokemonData = useApi(selectedPokemonUrl);
-
-
-
     const handlePress = async (pokemon: any) => {
-        const pokemonData = await fetchData(pokemon.url);
+        const pokemonData: PokemonDetail = await fetchDataApi(pokemon.url);
         const soundObject = new Audio.Sound();
 
         try {
@@ -108,7 +96,7 @@ export default function App() {
                     ref={scrollViewRef}
                     onScroll={handleScroll}
                     scrollEventThrottle={16}>
-                {results.map((pokemon: any, index: int) => {
+                {results.map((pokemon: any, index: number) => {
                     const id = (index + 1).toString().padStart(3, '0');
                         return (
                             <TouchableOpacity key={pokemon.name} onPress={() => handlePress(pokemon)} style={index === selectedPokemonIndex ? styles.selectedItem : null}>
