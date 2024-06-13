@@ -3,12 +3,7 @@ name: Run Tests
 on:
 
   push:
-    branches:
-      - main
-      - 'feature/*'
   pull_request:
-    branches:
-      - main
 permissions:
   contents: read
   actions: write
