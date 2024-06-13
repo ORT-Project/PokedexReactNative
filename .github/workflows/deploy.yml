@@ -11,7 +11,7 @@ on:
       - main
 permissions:
   contents: read
-  actions: read
+  actions: write
   checks: write
 jobs:
   test:
