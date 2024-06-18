@@ -7,44 +7,19 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    ActivityIndicator, Dimensions
+    Dimensions
 } from 'react-native'
 import { Audio } from 'expo-av'
-import React, {useEffect, useRef, useState} from 'react'
-import * as Font from 'expo-font'
+import React, { useRef, useState} from 'react'
 import useApi, { fetchDataApi } from '../hook/useApi'
 import { strUcFirst, removeAfterDash } from '../utils/utils'
 import type { ApiResponseType, PokemonDetail } from '../type'
+import { useBackSound } from '../utils/soundLoader'
 import { useFonts } from '../utils/fontLoader'
+import { sounds } from '../resources'
 
 export default function App() {
-    useEffect(() => {
-        let sound: any;
-        const playSound = async () => {
-            sound = new Audio.Sound();
-            try {
-                await sound.loadAsync(require('../../assets/pokemon_titlescreen.mp3'));
-                await sound.playAsync();
-                await sound.setVolumeAsync(0.4);
-                await sound.setIsLoopingAsync(true)
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        playSound().then(() => {
-            console.log('Musique lancée avec succès');
-        }).catch((err) => {
-            console.error(`Une erreur est survenue lors du lancement de la musique : ${err}`)
-        })
-
-        return () => {
-            if (sound) {
-                sound.unloadAsync();
-            }
-        };
-    }, []);
-
+    useBackSound(sounds.pTitleScreen)
     useFonts()
 
     const {data} = useApi<ApiResponseType[]>('https://pokeapi.co/api/v2/pokemon?limit=649&offset=0')
