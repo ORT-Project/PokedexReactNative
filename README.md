@@ -5,6 +5,8 @@ Une application mobile développée en React Native TypeScript
 pour recréer un Pokedex Pokemon, permettant aux utilisateurs parcourir 
 les pokemons existant ainsi avoir les informations de ceux-ci.
 
+Une release est disponible à cette [url](https://github.com/ORT-Project/PokedexReactNative/releases/tag/v1.0) pour les utilisateurs d'Android.
+
 ## Auteurs
 
 - [@BluedyAishela_](https://github.com/BluedyRimuru)
