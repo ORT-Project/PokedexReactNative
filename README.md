@@ -1,24 +1,24 @@
 
 # PokedexReactNative
 
-Une application mobile développée en React Native TypeScript pour recréer un Pokedex Pokemon, permettant aux utilisateurs parcourir les pokemons existant ainsi avoir les informations de ceux-ci.
-
-
+Une application mobile développée en React Native TypeScript 
+pour recréer un Pokedex Pokemon, permettant aux utilisateurs parcourir 
+les pokemons existant ainsi avoir les informations de ceux-ci.
 
 ## Auteurs
 
-- [@Neleoko](https://www.github.com/Neleoko)
 - [@BluedyAishela_](https://github.com/BluedyRimuru)
+- [@Neleoko](https://www.github.com/Neleoko)
 
 
 ## Lancement du projet
 
 Pour pouvoir lancer l'application :
 
-- Installer l'application Expo Go sur votre mobile
-- Lancer la commande `npm start`
-- Scanner le QRCode sur l'application Expo Go 
-- Enjoy ! 😃
+- Installez l'application Expo Go sur votre mobile
+- Exécutez la commande `npm start`
+- Scannez le QRCode sur l'application Expo Go
+
 ## Installation du projet
 
 Cloner le projet.
@@ -33,23 +33,24 @@ Aller dans le projet.
   cd PokedexReactNative
 ```
 
-Installer les dependences.
+Installer les dépendances.
 
 ```bash
   npm install
 ```
 
-Demarrer le server.
+Démarrer le server.
 
 ```bash
   npm start
 ```
 
-Demarrer les tests unitaires.
+Exécuter les tests unitaires.
 
 ```bash
   npm test
 ```
-## Demo
-
-![nyan-cat-gif-1](https://github.com/ORT-Project/PokedexReactNative/assets/98337057/6f954d96-50d9-4804-8da6-03ec7be21a6f)
+<div style="display: flex;">
+    <img src="./src/resources/readme/screenHome.jpg" style="width: 45%; margin-right: 4%; margin-left: 3%;">
+    <img src="./src/resources/readme/screenDetails.jpg" style="width: 45%; margin-right: 4%;">
+</div>

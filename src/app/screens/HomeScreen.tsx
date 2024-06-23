@@ -54,7 +54,9 @@ export default function HomeScreen({ navigation }: Readonly<Props>) {
     if (!fontsLoaded || !results) {
         return (
             <SafeAreaView style={styles.loadingSafeArea}>
-                <Image source={images.loadingGif} style={styles.loadingImage}></Image>
+                <ImageBackground source={images.bgPokedex} style={styles.imageBackgroundLoading}>
+                    <Image source={images.loadingGif} style={styles.loadingImage}></Image>
+                </ImageBackground>
             </SafeAreaView>
         )
     }
@@ -82,6 +84,9 @@ export default function HomeScreen({ navigation }: Readonly<Props>) {
 
 const styles = StyleSheet.create({
     loadingSafeArea: {
+        flex: 1,
+    },
+    imageBackgroundLoading: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
