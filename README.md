@@ -51,6 +51,6 @@ Exécuter les tests unitaires.
   npm test
 ```
 <div style="display: flex;">
-    <img src="./src/resources/readme/screenHome.jpg" style="width: 45%; margin-right: 4%; margin-left: 3%;">
-    <img src="./src/resources/readme/screenDetails.jpg" style="width: 45%; margin-right: 4%;">
+    <img src="./src/resources/readme/screenHome.jpg" style="width: 45%; margin-right: 40%; margin-left: 20%;">
+    <img src="./src/resources/readme/screenDetails.jpg" style="width: 45%; margin-right: 40%;">
 </div>
