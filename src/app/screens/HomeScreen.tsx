@@ -1,24 +1,21 @@
 import {
     StyleSheet,
     Text,
-    View,
     SafeAreaView,
     ImageBackground,
     TouchableOpacity,
     Image,
     ScrollView,
-    Dimensions
 } from 'react-native'
-import { Audio } from 'expo-av'
-import React, { useRef, useState} from 'react'
 import useApi, { fetchDataApi } from '../../hook/useApi'
 import { strUcFirst, removeAfterDash } from '../../utils/utils'
 import type { ApiResponseType, PokemonDetail } from '../../type'
-import { useBackSound } from '../../utils/soundLoader'
-import { useFonts } from '../../utils/fontLoader'
-import { sounds } from '../../resources'
+import { useBackSound, } from '../../utils/soundLoader'
+import {loadPokemonFonts} from '../../utils/fontLoader'
+import { images, sounds } from '../../resources'
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {StackParamList} from "../navigationType";
+import {useEffect, useState } from 'react'
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<StackParamList, 'Home'>;
 
@@ -26,51 +23,51 @@ type Props = {
     navigation: HomeScreenNavigationProp;
 };
 
-export default function HomeScreen({ navigation }: Props) {
+export default function HomeScreen({ navigation }: Readonly<Props>) {
     useBackSound(sounds.pTitleScreen)
-    useFonts()
+
+    const [fontsLoaded, setFontsLoaded] = useState(false);
+
+    useEffect(() => {
+        const loadFonts = () => {
+            loadPokemonFonts().then((loaded) => {
+                setFontsLoaded(loaded);
+            }).catch((error) => {
+                // Gérer les erreurs si nécessaire
+                console.error('Erreur lors du chargement des polices :', error);
+            });
+        };
+
+        loadFonts();
+    }, []);
+
 
     const {data} = useApi<ApiResponseType[]>('https://pokeapi.co/api/v2/pokemon?limit=649&offset=0')
     const results = data?.results ?? []
 
-    const handlePress = async (pokemon: any) => {
+    const handlePress = async (pokemon: any, id: string) => {
         const pokemonData: PokemonDetail = await fetchDataApi(pokemon.url);
-        const soundObject = new Audio.Sound();
-
-        try {
-            await soundObject.loadAsync({ uri: pokemonData.cries.latest });
-            await soundObject.playAsync();
-            await soundObject.setVolumeAsync(1);
-        } catch (error) {
-            console.error('Error playing sound:', error);
-        }
-
-        navigation.navigate('Details')
+        // await handleOneTimeSound(pokemonData.cries.latest)
+        navigation.navigate('Details', { pokemonData, id })
     };
 
-    const scrollViewRef = useRef(null);
-    const [selectedPokemonIndex, setSelectedPokemonIndex] = useState(0);
-    const ITEM_HEIGHT = 70; // Adjust this value based on your item height
+    if (!fontsLoaded || !results) {
+        return (
+            <SafeAreaView style={styles.loadingSafeArea}>
+                <Image source={images.loadingGif} style={styles.loadingImage}></Image>
+            </SafeAreaView>
+        )
+    }
 
-    const handleScroll = (event: any) => {
-        const offsetY = event.nativeEvent.contentOffset.y;
-        const index = Math.round(offsetY / ITEM_HEIGHT);
-        setSelectedPokemonIndex(index);
-    };
-
-    // resizeMode="repeat"
     return (
         <SafeAreaView style={styles.safeArea}>
-            <ImageBackground source={require('../../resources/image/pokedex.webp')} style={styles.imageBackground}>
-                <ScrollView
-                    ref={scrollViewRef}
-                    onScroll={handleScroll}
-                    scrollEventThrottle={16}>
+            <ImageBackground source={images.bgPokedex} style={styles.imageBackground}>
+                <ScrollView>
                     {results.map((pokemon: any, index: number) => {
                         const id = (index + 1).toString().padStart(3, '0');
                         return (
-                            <TouchableOpacity key={pokemon.name} onPress={() => handlePress(pokemon)} style={index === selectedPokemonIndex ? styles.selectedItem : null}>
-                                <ImageBackground key={pokemon.name} source={require('../../resources/image/background_pokemon_select.png')} style={styles.button}>
+                            <TouchableOpacity key={pokemon.name} onPress={() => handlePress(pokemon, id)}>
+                                <ImageBackground key={pokemon.name} source={images.pokemonItemDex} style={styles.button}>
                                     <Image source={{ uri: 'https://img.pokemondb.net/sprites/black-white/normal/' + pokemon.name + '.png'}} style={styles.pokemonImageDex} />
                                     <Text style={styles.textImageDex} key={pokemon.name}>{id} {strUcFirst(removeAfterDash(pokemon.name))}</Text>
                                 </ImageBackground>
@@ -78,15 +75,22 @@ export default function HomeScreen({ navigation }: Props) {
                         );
                     })}
                 </ScrollView>
-                <View style={styles.arrowContainer}>
-                    <Text style={styles.arrow}>►</Text>
-                </View>
             </ImageBackground>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    loadingSafeArea: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loadingImage: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain'
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -118,20 +122,5 @@ const styles = StyleSheet.create({
         marginLeft: 76,
         color: '#fff',
         position: 'absolute'
-    },
-    selectedItem: {
-        transform: [{ translateX: 10 }],
-    },
-    arrowContainer: {
-        position: 'absolute',
-        left: 10,
-        top: '50%',
-        transform: [{ translateY: -Dimensions.get('window').height / 2 }],
-        zIndex: 1,
-    },
-    arrow: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#000',
-    },
+    }
 });

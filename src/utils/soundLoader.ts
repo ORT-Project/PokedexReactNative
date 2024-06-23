@@ -29,3 +29,14 @@ export const useBackSound = (soundSource: string) => {
         };
     }, []);
 }
+
+export const handleOneTimeSound = async (soundSource: string) => {
+    const soundObject = new Audio.Sound();
+    try {
+        await soundObject.loadAsync({ uri: soundSource });
+        await soundObject.playAsync();
+        await soundObject.setVolumeAsync(1);
+    } catch (error) {
+        console.error('Error playing sound:', error);
+    }
+}
