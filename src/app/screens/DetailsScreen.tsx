@@ -48,7 +48,7 @@ export default function DetailsScreen({ navigation, route }: Readonly<Props>) {
                 />
                 <View style={styles.info}>
                     <Text style={styles.label}>{allTypesFormatted}</Text>
-                    <Text style={styles.details}>HT: {pokemon.height} cm</Text>
+                    <Text style={styles.details}>HT: {pokemon.height * 10} cm</Text>
                     <Text style={styles.details}>WT: {pokemon.weight * 0.1} kg</Text>
                 </View>
                 <View style={styles.buttons}>
